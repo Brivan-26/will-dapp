@@ -7,6 +7,7 @@ contract Will {
     mapping(address => uint) amount;
     mapping(address => bool) isInheritor;
     uint lastPing;
+    
 
     constructor() payable {
         owner = msg.sender;
@@ -16,11 +17,15 @@ contract Will {
 
     function addInherite(address _inherite, uint _amount) external onlyOwner {
         require(!isInheritor[_inherite], "Already inheritor");
-        require(fortune - _amount >=0, "Not sufficiant balance");
+        require(fortune  >=_amount, "Not sufficiant balance");
         inheritances.push(_inherite);
         isInheritor[_inherite] = true;
         amount[_inherite] = _amount;
         fortune -= _amount;
+    }
+
+    function getFortune() external view returns(uint){
+        return fortune;
     }
 
     function increaseFortune(uint _fortune) external payable onlyOwner {
